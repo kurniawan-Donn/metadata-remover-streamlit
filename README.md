@@ -1,4 +1,7 @@
 # 🛡️ Metadata Remover
+[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://metadata-remover-app-dk.streamlit.app)
+
+🔗 **Live Demo:** [metadata-remover-app-dk.streamlit.app](https://metadata-remover-app-dk.streamlit.app)
 
 **✨ Bersihkan Jejak Digital Anda dengan Satu Klik! 🥷**
 
