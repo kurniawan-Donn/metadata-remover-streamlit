@@ -1,5 +1,13 @@
 # 🛡️ Metadata Remover
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://metadata-remover-app-dk.streamlit.app)
+[![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
+
+[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://metadata-remover-app-dk.streamlit.app)
+
+🔗 **Live Demo:** [metadata-remover-app-dk.streamlit.app](https://metadata-remover-app-dk.streamlit.app)
+
 **✨ Bersihkan Jejak Digital Anda dengan Satu Klik! 🥷**
 
 [![Streamlit](https://img.shields.io/badge/Built_with-Streamlit-FF4B4B?style=for-the-badge&logo=streamlit)](https://streamlit.io/)
@@ -799,6 +807,36 @@ Jika proyek ini bermanfaat:
 📢 Bagikan proyek kepada orang lain.
 
 ------------------------------------------------------------------------
+
+---
+
+## 📄 Lisensi
+
+Project ini dilisensikan di bawah **MIT License**.
+
+Anda bebas untuk:
+- ✅ Menggunakan secara komersial
+- ✅ Memodifikasi
+- ✅ Mendistribusikan
+- ✅ Menggunakan secara privat
+
+Dengan syarat mencantumkan copyright notice dan license notice asli.
+
+Lihat file [LICENSE](LICENSE) untuk detail lengkap.
+
+---
+
+## 🙏 Kredit
+
+Dibuat oleh [kurniawan-donn](https://github.com/kurniawan-Donn).
+
+Ikon oleh [Lucide Icons](https://lucide.dev) (ISC License).
+
+---
+
+## ⭐ Dukung Project
+
+Kalau project ini bermanfaat, berikan ⭐ di [GitHub](https://github.com/kurniawan-Donn/metadata-remover-streamlit)!
 
 ::: {align="center"}
 ## 🛡️ Metadata Remover
