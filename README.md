@@ -1,22 +1,14 @@
 # 🛡️ Metadata Remover
-[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://metadata-remover-app-dk.streamlit.app)
-
-🔗 **Live Demo:** [metadata-remover-app-dk.streamlit.app](https://metadata-remover-app-dk.streamlit.app)
-
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://metadata-remover-app-dk.streamlit.app)
-[![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
-
-[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://metadata-remover-app-dk.streamlit.app)
-
-🔗 **Live Demo:** [metadata-remover-app-dk.streamlit.app](https://metadata-remover-app-dk.streamlit.app)
 
 **✨ Bersihkan Jejak Digital Anda dengan Satu Klik! 🥷**
 
-[![Streamlit](https://img.shields.io/badge/Built_with-Streamlit-FF4B4B?style=for-the-badge&logo=streamlit)](https://streamlit.io/)
-[![Python](https://img.shields.io/badge/Python-3.8+-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
-[![License](https://img.shields.io/badge/License-MIT-success?style=for-the-badge)](LICENSE)
-[![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?style=for-the-badge&logo=docker&logoColor=white)](https://www.docker.com/)
+[![Live Demo](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://metadata-remover-app-dk.streamlit.app)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Python 3.10+](https://img.shields.io/badge/Python-3.10+-3776AB?logo=python&logoColor=white)](https://www.python.org/)
+
+🔗 **Live Demo:** [metadata-remover-app-dk.streamlit.app](https://metadata-remover-app-dk.streamlit.app)
+
+Aplikasi berbasis Streamlit untuk menganalisis dan **menghapus metadata sensitif** dari berbagai jenis file — melindungi privasi Anda sebelum file dibagikan ke publik.
 
 > Setiap file yang Anda bagikan dapat menyimpan "rahasia" di balik
 > layarnya. Mulai dari lokasi GPS pada foto, nama pembuat dokumen,
