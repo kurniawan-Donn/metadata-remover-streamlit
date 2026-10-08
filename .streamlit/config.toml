@@ -1,0 +1,10 @@
+[server]
+maxUploadSize = 200
+timeout = 3600
+
+[browser]
+gatherUsageStats = false
+
+[theme]
+base = "light"
+primaryColor = "#4F46E5"

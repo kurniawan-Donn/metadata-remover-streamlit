@@ -1,0 +1,19 @@
+# Test files (jangan pernah masuk Git)
+tests/
+test_files/
+
+# Virtual environment
+venv/
+env/
+.venv/
+
+# Python
+__pycache__/
+*.py[cod]
+
+# Streamlit secrets
+.streamlit/secrets.toml
+
+# IDE
+.vscode/
+.idea/

@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --card-bg: #FFFFFF;
+    --card-hover: #F8FAFC;
+    --border: #E2E8F0;
+    --text-primary: #0F172A;
+    --text-secondary: #64748B;
+    --text-tertiary: #94A3B8;
+    --icon-bg: #EEF2FF;
+    --icon-color: #4F46E5;
+    --brand: #4F46E5;
+    --ghost: #EEF2FF;
+    --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont,
+                 'Segoe UI', Roboto, sans-serif;
+  }
+
+  body[data-theme="dark"] {
+    --card-bg: #1E293B;
+    --card-hover: #334155;
+    --border: #334155;
+    --text-primary: #F8FAFC;
+    --text-secondary: #94A3B8;
+    --text-tertiary: #64748B;
+    --icon-bg: rgba(79, 70, 229, 0.18);
+    --icon-color: #A5B4FC;
+    --brand: #A5B4FC;
+    --ghost: rgba(79, 70, 229, 0.15);
+  }
+
+  html, body {
+    font-family: var(--font-sans);
+    background: transparent;
+    color: var(--text-primary);
+    padding: 4px 0;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .sortable-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .sortable-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 14px;
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    cursor: grab;
+    transition: background-color 0.22s cubic-bezier(0.4, 0, 0.2, 1),
+                transform 0.22s cubic-bezier(0.4, 0, 0.2, 1),
+                box-shadow 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+    user-select: none;
+    touch-action: manipulation;
+  }
+
+  .sortable-item:hover {
+    background: var(--card-hover);
+    transform: translateX(2px);
+    box-shadow: 0 4px 12px -2px rgba(15, 23, 42, 0.08);
+  }
+
+  .sortable-item:active { cursor: grabbing; }
+
+  .sortable-ghost {
+    opacity: 0.45;
+    background: var(--ghost) !important;
+    border-style: dashed !important;
+    border-color: var(--brand) !important;
+  }
+  .sortable-chosen {
+    box-shadow: 0 8px 24px -6px rgba(79, 70, 229, 0.4);
+    transform: scale(1.015);
+  }
+  .sortable-drag {
+    opacity: 0.95;
+  }
+
+  .drag-handle {
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    cursor: grab;
+    padding: 4px 2px;
+    border-radius: 6px;
+    transition: background 0.15s ease;
+  }
+  .drag-handle:hover {
+    background: var(--icon-bg);
+    color: var(--brand);
+  }
+  .drag-handle:active { cursor: grabbing; }
+
+  .file-icon-wrap {
+    width: 34px;
+    height: 34px;
+    border-radius: 9px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--icon-bg);
+    color: var(--icon-color);
+    flex-shrink: 0;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.3px;
+  }
+
+  .file-info { flex: 1; min-width: 0; }
+  .file-name {
+    font-size: 13.5px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    letter-spacing: -0.2px;
+  }
+  .file-meta {
+    font-size: 11.5px;
+    color: var(--text-tertiary);
+    font-weight: 500;
+  }
+
+  .order-badge {
+    font-size: 10.5px;
+    font-weight: 800;
+    color: var(--brand);
+    background: var(--icon-bg);
+    padding: 3px 9px;
+    border-radius: 999px;
+    flex-shrink: 0;
+    letter-spacing: 0.4px;
+    min-width: 30px;
+    text-align: center;
+  }
+
+  .empty {
+    padding: 22px 18px;
+    text-align: center;
+    color: var(--text-tertiary);
+    font-size: 13px;
+    border: 1px dashed var(--border);
+    border-radius: 12px;
+    background: var(--card-bg);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .sortable-item { transition: none; }
+  }
+</style>
+</head>
+<body>
+<ul class="sortable-list" id="list" aria-label="Urutan file"></ul>
+
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.2/Sortable.min.js"></script>
+<script>
+(function() {
+  const listEl = document.getElementById('list');
+  let sortable = null;
+  let lastSent = null;
+
+  function sendValue(value) {
+    if (window.Streamlit && typeof window.Streamlit.setComponentValue === 'function') {
+      window.Streamlit.setComponentValue(value);
+    }
+  }
+
+  function getExtBadge(name) {
+    const parts = String(name).split('.');
+    if (parts.length < 2) return 'FILE';
+    const ext = parts.pop().toUpperCase();
+    return ext.slice(0, 4);
+  }
+
+  function escapeHtml(s) {
+    return String(s)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+
+  function renderItems(items) {
+    listEl.innerHTML = '';
+    if (!items || items.length === 0) {
+      listEl.innerHTML = '<div class="empty">Tidak ada file untuk diurutkan.</div>';
+      return;
+    }
+    items.forEach(function(item, idx) {
+      const li = document.createElement('li');
+      li.className = 'sortable-item';
+      li.dataset.id = item.id;
+      li.innerHTML =
+        '<div class="drag-handle" aria-label="Drag untuk memindahkan">' +
+          '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" ' +
+               'fill="none" stroke="currentColor" stroke-width="2.4" ' +
+               'stroke-linecap="round" stroke-linejoin="round">' +
+            '<circle cx="9" cy="6" r="1"/><circle cx="9" cy="12" r="1"/><circle cx="9" cy="18" r="1"/>' +
+            '<circle cx="15" cy="6" r="1"/><circle cx="15" cy="12" r="1"/><circle cx="15" cy="18" r="1"/>' +
+          '</svg>' +
+        '</div>' +
+        '<div class="file-icon-wrap">' + escapeHtml(getExtBadge(item.name)) + '</div>' +
+        '<div class="file-info">' +
+          '<div class="file-name">' + escapeHtml(item.name) + '</div>' +
+          '<div class="file-meta">' + Number(item.size_kb).toFixed(1) + ' KB</div>' +
+        '</div>' +
+        '<div class="order-badge">#' + (idx + 1) + '</div>';
+      listEl.appendChild(li);
+    });
+  }
+
+  function refreshBadges() {
+    const children = Array.from(listEl.children);
+    children.forEach(function(el, i) {
+      const b = el.querySelector('.order-badge');
+      if (b) b.textContent = '#' + (i + 1);
+    });
+  }
+
+  function setupSortable() {
+    if (sortable) { sortable.destroy(); sortable = null; }
+    if (!window.Sortable) {
+      return;
+    }
+    sortable = Sortable.create(listEl, {
+      animation: 220,
+      easing: 'cubic-bezier(0.4, 0, 0.2, 1)',
+      handle: '.drag-handle',
+      ghostClass: 'sortable-ghost',
+      chosenClass: 'sortable-chosen',
+      dragClass: 'sortable-drag',
+      forceFallback: false,
+      onEnd: function() {
+        refreshBadges();
+        const order = Array.from(listEl.children)
+          .filter(function(el) { return el.dataset.id; })
+          .map(function(el) { return el.dataset.id; });
+        const payload = JSON.stringify({ order: order });
+        if (payload !== lastSent) {
+          lastSent = payload;
+          sendValue({ order: order });
+        }
+      }
+    });
+  }
+
+  function onRender(event) {
+    const data = event.data || {};
+    const args = data.args || {};
+    const items = Array.isArray(args.items) ? args.items : [];
+    const theme = args.theme === 'dark' ? 'dark' : 'light';
+
+    document.body.setAttribute('data-theme', theme);
+
+    const currentIds = Array.from(listEl.children)
+      .filter(function(el) { return el.dataset.id; })
+      .map(function(el) { return el.dataset.id; })
+      .join('|');
+    const newIds = items.map(function(i) { return i.id; }).join('|');
+
+    if (currentIds !== newIds || listEl.children.length === 0) {
+      renderItems(items);
+      setupSortable();
+    }
+
+    const h = items.length === 0 ? 90 : items.length * 66 + 12;
+    if (window.Streamlit && window.Streamlit.setFrameHeight) {
+      window.Streamlit.setFrameHeight(h);
+    }
+  }
+
+  if (window.Streamlit) {
+    window.Streamlit.events.addEventListener(
+      window.Streamlit.RENDER_EVENT, onRender
+    );
+    window.Streamlit.setComponentReady();
+  }
+})();
+</script>
+</body>
+</html>
